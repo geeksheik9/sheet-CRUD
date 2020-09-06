@@ -1,5 +1,27 @@
 version: "3.7"
+
 services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:21017
+    expose:
+      - 27017
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+
+  db-ui:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
+    links:
+      - db
+    depends_on:
+      - db
+
   sheet-crud:
     build:
       context: .
