@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  sheet-crud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "8080:3000" # application port
+    command: [./app]
+    restart: always
