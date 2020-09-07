@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	model "github.com/geeksheik9/sheet-CRUD/models"
+	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/gorilla/mux"
 )
 
@@ -43,9 +45,16 @@ func (s *CharacterService) healthCheck(database CharacterDatabase) http.Handler 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dbErr := database.Ping()
 
-		Response := model.HealthCheckResponse{
+		response := model.HealthCheckResponse{
 			APIVersion: s.Version,
 			DBError:    dbErr.Error(),
 		}
+
+		if dbErr != nil {
+			api.RespondWithJSON(w, http.StatusFailedDependency, response)
+			return
+		}
+
+		api.RespondWithJSON(w, http.StatusOK, response)
 	})
 }
