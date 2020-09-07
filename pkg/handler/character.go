@@ -10,14 +10,14 @@ import (
 
 //CharacterDatabase is the interface setup for accesssing the character database
 type CharacterDatabase interface {
-	GetCharacterSheets()
-	FindCharacterSheetByID()
-	FindCharacterSheetByName()
-	UpdateCharacterSheetByID()
-	InsertCharacterSheet()
-	DeleteCharacterSheetByID()
-	FindArchivedCharacterSheetByID()
-	FindArchivedCharacterSheetByName()
+	//GetCharacterSheets()
+	//FindCharacterSheetByID()
+	//FindCharacterSheetByName()
+	//UpdateCharacterSheetByID()
+	//InsertCharacterSheet()
+	//DeleteCharacterSheetByID()
+	//FindArchivedCharacterSheetByID()
+	//FindArchivedCharacterSheetByName()
 	Ping() error
 }
 

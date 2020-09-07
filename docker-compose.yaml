@@ -3,15 +3,18 @@ version: "3.7"
 services:
   db:
     image: mongo
+    container_name: StarWars-mongo-container
     restart: always
+    environment:
+      MONGO_INITDB_DATABASE: characters
     ports:
       - 27017:21017
     expose:
       - 27017
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
   db-ui:
     image: mongo-express
+    container_name: StarWars-Mongo-Express-container
     restart: always
     ports:
       - 8081:8081
@@ -21,17 +24,16 @@ services:
       - db
     depends_on:
       - db
-
-  sheet-crud:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder
-    security_opt:
-      - apparmor:unconfined
-    cap_add:
-      - SYS_PTRACE
-    ports:
-      - "8080:3000" # application port
-    command: [./app]
-    restart: always
+  #sheet-crud:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #    target: builder
+  #  security_opt:
+  #    - apparmor:unconfined
+  #  cap_add:
+  #    - SYS_PTRACE
+  #  ports:
+  #    - "3000:3000" # application port
+  #  command: [./app]
+  #  restart: always
