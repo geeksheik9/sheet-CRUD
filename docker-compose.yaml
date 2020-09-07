@@ -6,11 +6,9 @@ services:
     container_name: StarWars-mongo-container
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: characters
+      - MONGO_INITDB_DATABASE=characters
     ports:
       - 27017:21017
-    expose:
-      - 27017
 
   db-ui:
     image: mongo-express

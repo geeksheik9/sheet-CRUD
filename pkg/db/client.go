@@ -8,7 +8,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 // InitializeClients returns a mongo client.
@@ -26,7 +25,9 @@ func InitializeClients(ctx context.Context) (*mongo.Client, error) {
 		return nil, err
 	}
 
-	err = client.Ping(ctx, readpref.Primary())
+	logrus.Infof("Client: %v", client)
+
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		logrus.Infof("3")
 		return nil, err
