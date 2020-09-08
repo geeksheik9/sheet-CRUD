@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"os"
 
 	"github.com/geeksheik9/sheet-CRUD/config"
 
@@ -12,7 +13,7 @@ import (
 // InitializeClients returns a mongo client.
 func InitializeClients(ctx context.Context) (*mongo.Client, error) {
 
-	options := options.Client().ApplyURI("mongodb://localhost:27017")
+	options := options.Client().ApplyURI(os.Getenv("DB_URI"))
 
 	err := options.Validate()
 	if err != nil {

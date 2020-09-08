@@ -35,11 +35,10 @@ func main() {
 
 	client, err := db.InitializeClients(ctx)
 	if err != nil {
-		//logrus.Warnf("Failed to intialize client with error: %v, trying again", err)
-		/*err = nil
+		logrus.Warnf("Failed to intialize client with error: %v, trying again", err)
+		err = nil
 		ctx, cancel = context.WithTimeout(context.Background(), time.Second*60)
 		client, err = db.InitializeClients(ctx)
-		*/
 		if err != nil {
 			logrus.Fatalf("Failed to initialize database client a second time with error: %v", err)
 		}

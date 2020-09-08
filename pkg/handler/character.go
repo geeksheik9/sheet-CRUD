@@ -6,6 +6,7 @@ import (
 	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 //CharacterDatabase is the interface setup for accesssing the character database
@@ -44,10 +45,16 @@ func (s *CharacterService) PingCheck(w http.ResponseWriter, r *http.Request) {
 func (s *CharacterService) healthCheck(database CharacterDatabase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dbErr := database.Ping()
+		var stringDBErr string
+
+		logrus.Infof("Log DB err: %v", dbErr)
+		if dbErr != nil {
+			stringDBErr = dbErr.Error()
+		}
 
 		response := model.HealthCheckResponse{
 			APIVersion: s.Version,
-			DBError:    dbErr.Error(),
+			DBError:    stringDBErr,
 		}
 
 		if dbErr != nil {
