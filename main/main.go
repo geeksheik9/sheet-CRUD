@@ -33,8 +33,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	logrus.Infof("Context: %v", ctx)
-
 	client, err := db.InitializeClients(ctx)
 	if err != nil {
 		//logrus.Warnf("Failed to intialize client with error: %v, trying again", err)

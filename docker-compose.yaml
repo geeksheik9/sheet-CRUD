@@ -5,8 +5,8 @@ services:
     image: mongo
     container_name: StarWars-mongo-container
     restart: always
-    environment:
-      - MONGO_INITDB_DATABASE=characters
+    volumes:
+      - ./mongo-volume:/data/db
     ports:
       - 27017:21017
 

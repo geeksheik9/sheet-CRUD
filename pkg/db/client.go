@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/geeksheik9/sheet-CRUD/config"
-	"github.com/sirupsen/logrus"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,7 +12,7 @@ import (
 // InitializeClients returns a mongo client.
 func InitializeClients(ctx context.Context) (*mongo.Client, error) {
 
-	options := options.Client().ApplyURI("mongodb://localhost:27017")
+	options := options.Client().ApplyURI("mongodb://172.28.0.1:27017")
 
 	err := options.Validate()
 	if err != nil {
@@ -25,11 +24,8 @@ func InitializeClients(ctx context.Context) (*mongo.Client, error) {
 		return nil, err
 	}
 
-	logrus.Infof("Client: %v", client)
-
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		logrus.Infof("3")
 		return nil, err
 	}
 
