@@ -12,7 +12,7 @@ import (
 // InitializeClients returns a mongo client.
 func InitializeClients(ctx context.Context) (*mongo.Client, error) {
 
-	options := options.Client().ApplyURI("mongodb://172.28.0.1:27017")
+	options := options.Client().ApplyURI("mongodb://localhost:27017")
 
 	err := options.Validate()
 	if err != nil {
