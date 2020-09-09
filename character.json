@@ -1,0 +1,125 @@
+{
+  "characterName": "Tror Sard",
+  "playerName": "Ben",
+  "species": "Human",
+  "career": "Mandalorian",
+  "specializationTrees": [
+    {
+      "treeName": "Mandalorian",
+      "completed": false
+    }
+  ],
+  "soakValue": 5,
+  "wounds": {
+    "threshold": 15,
+    "current": 0
+  },
+  "strain": {
+    "threshold": 15,
+    "current": 0
+  },
+  "defense": {
+    "ranged": 5,
+    "melee": 3
+  },
+  "characteristics": {
+    "brawn": 3,
+    "agility": 3,
+    "intellect": 3,
+    "cunning": 5,
+    "willpower": 3,
+    "presence": 3
+  },
+  "skills": [
+    {
+      "name": "athletics",
+      "characteristic": "brawn",
+      "career": true,
+      "level": 5,
+      "description": "for athletic checks"
+    },
+    {
+      "name": "skullduggery",
+      "characteristic": "cunning",
+      "career": false,
+      "level": 3,
+      "description": "for theft checks"
+    }
+  ],
+  "weapons": [
+    {
+      "name": "blaster pistol",
+      "skill": "ranged heavy",
+      "damage": "+1",
+      "crit": 2,
+      "range": "medium",
+      "special": "none"
+    }
+  ],
+  "totalXP": 200,
+  "availableXP": 25,
+  "motivation": {
+    "type": "coolness",
+    "description": "being cool af"
+  },
+  "morality": {
+    "emotionalStrength": "being cool af",
+    "emotionalWeakness": "squares",
+    "conflict": 4,
+    "morality": 2
+  },
+  "characterDescription": {
+    "gender": "Male",
+    "age": 35,
+    "height": 64,
+    "build": "muscular",
+    "hair": "brown",
+    "eyes": "gray",
+    "notableFeatures": "none"
+  },
+  "equipment": {
+    "credits": 3000,
+    "armor": [
+      {
+        "gear": "adverse environemt gear"
+      },
+      {
+        "gear": "mandalorian armor"
+      }
+    ],
+    "personalGear": [
+      {
+        "gear": "binoculars"
+      },
+      {
+        "gear": "broken lightsaber"
+      }
+    ]
+  },
+  "criticalInjuries": [
+    {
+      "severity": 5,
+      "result": true
+    },
+    {
+      "severity": 1,
+      "result": false
+    }
+  ],
+  "talents": [
+    {
+      "name": "sidestep",
+      "page": 25,
+      "description": "once per encounter can spend success to avoid an attack",
+      "forcePower": [
+        {
+          "name": "move",
+          "description": "spend one force point to move something",
+          "completed": false
+        }
+      ]
+    }
+  ],
+  "forceRating": 2,
+  "version": 0
+}

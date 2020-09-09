@@ -7,6 +7,7 @@ import (
 	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/common/log"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -77,6 +78,7 @@ func (s *CharacterService) InsertForceCharacterSheet(w http.ResponseWriter, r *h
 	characterSheet.ID = primitive.NewObjectID()
 
 	err := json.NewDecoder(r.Body).Decode(&characterSheet)
+	log.Infof("Error: %v", err.Error())
 	if err != nil {
 		api.RespondWithError(w, http.StatusBadRequest, "Invalid Request Payload")
 		return

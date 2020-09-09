@@ -9,11 +9,11 @@ type ForceCharacterSheet struct {
 	PlayerName           string                `json:"playerName" bson:"playerName"`
 	Species              string                `json:"species" bson:"species"`
 	Career               string                `json:"career" bson:"career"`
-	SoakValue            int64                 `json:"soakValue" bson:"soakValue"`
 	SpecializationTrees  []SpecializationTrees `json:"specializationTrees" bson:"specializationTrees"`
-	Wounds               []Amount              `json:"wound" bson:"wound"`
-	Strain               []Amount              `json:"strain" bson:"strain"`
-	Defense              []DefenseStats        `json:"defense" bson:"defense"`
+	SoakValue            int64                 `json:"soakValue" bson:"soakValue"`
+	Wounds               Amount                `json:"wound" bson:"wound"`
+	Strain               Amount                `json:"strain" bson:"strain"`
+	Defense              DefenseStats          `json:"defense" bson:"defense"`
 	Characteristics      Characteristics       `json:"characteristics" bson:"characteristics"`
 	Skills               []Skills              `json:"skills" bson:"skills"`
 	Weapons              []Weapons             `json:"weapons" bson:"weapons"`
@@ -103,9 +103,14 @@ type Morality struct {
 
 //Equipment is a subcatergory of the FFG Star Wars character sheet that keeps track of the equipment a character has on their person
 type Equipment struct {
-	Credits      int64    `json:"credits" bson:"credits"`
-	Armor        []string `json:"armor" bson:"armor"`
-	PersonalGear []string `json:"personalGear" bson:"personalGear"`
+	Credits      int64  `json:"credits" bson:"credits"`
+	Armor        []Gear `json:"armor" bson:"armor"`
+	PersonalGear []Gear `json:"personalGear" bson:"personalGear"`
+}
+
+//Gear is the generic for any gear a character may carry for the FFG Star Wars character sheet
+type Gear struct {
+	Gear string `json:"gear" bson:"gear"`
 }
 
 //Talents is a subcategory of the FFG Star Wars character sheet that keeps track of all talents acquired through skill trees
