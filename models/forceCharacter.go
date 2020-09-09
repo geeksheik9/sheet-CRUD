@@ -26,6 +26,7 @@ type ForceCharacterSheet struct {
 	CriticalInjuries     []CriticalInjuries    `json:"criticalInjuries" bson:"criticalInjuries"`
 	Talents              []Talents             `json:"talents" bson:"talents"`
 	ForceRating          int64                 `json:"forceRating" bson:"forceRating"`
+	Version              int64                 `json:"version" bson:"version"`
 }
 
 //DefenseStats is a generic that holds a characters Defensive amount for ranged and melee damage

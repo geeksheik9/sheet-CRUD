@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 
+	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/sirupsen/logrus"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,5 +24,16 @@ func (d *CharacterDB) Ping() error {
 	if err != nil {
 		logrus.Errorf("ERROR connectiong to database %v", err)
 	}
+	return err
+}
+
+//InsertForceCharacterSheet inserts the FFG Star Wars Force sensitive character sheet into the database
+func (d *CharacterDB) InsertForceCharacterSheet(sheet model.ForceCharacterSheet) error {
+	logrus.Debug("BEGIN - InsertForceCharacterSheet")
+
+	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
+
+	_, err := collection.InsertOne(context.Background(), sheet)
+
 	return err
 }

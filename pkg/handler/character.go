@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //CharacterDatabase is the interface setup for accesssing the character database
@@ -15,7 +17,7 @@ type CharacterDatabase interface {
 	//FindCharacterSheetByID()
 	//FindCharacterSheetByName()
 	//UpdateCharacterSheetByID()
-	//InsertCharacterSheet()
+	InsertForceCharacterSheet(model.ForceCharacterSheet) error
 	//DeleteCharacterSheetByID()
 	//FindArchivedCharacterSheetByID()
 	//FindArchivedCharacterSheetByName()
@@ -32,6 +34,7 @@ type CharacterService struct {
 func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	r.HandleFunc("/ping", s.PingCheck).Methods(http.MethodGet)
 	r.Handle("/health", s.healthCheck(s.Database)).Methods(http.MethodGet)
+	r.HandleFunc("/force-character-sheet", s.InsertForceCharacterSheet).Methods(http.MethodPost)
 
 	return r
 }
@@ -64,4 +67,30 @@ func (s *CharacterService) healthCheck(database CharacterDatabase) http.Handler 
 
 		api.RespondWithJSON(w, http.StatusOK, response)
 	})
+}
+
+//InsertForceCharacterSheet is the handler function for inserting a character sheet
+func (s *CharacterService) InsertForceCharacterSheet(w http.ResponseWriter, r *http.Request) {
+	logrus.Infof("InsertForceCharacterSheet invoked with url: %v", r.URL)
+
+	var characterSheet model.ForceCharacterSheet
+	characterSheet.ID = primitive.NewObjectID()
+
+	err := json.NewDecoder(r.Body).Decode(&characterSheet)
+	if err != nil {
+		api.RespondWithError(w, http.StatusBadRequest, "Invalid Request Payload")
+		return
+	}
+
+	if characterSheet.Version == 0 {
+		characterSheet.Version = 1
+	}
+
+	err = s.Database.InsertForceCharacterSheet(characterSheet)
+	if err != nil {
+		api.RespondWithJSON(w, api.CheckError(err), err.Error())
+		return
+	}
+
+	api.RespondWithJSON(w, http.StatusCreated, characterSheet.ID)
 }
