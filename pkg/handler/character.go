@@ -8,7 +8,6 @@ import (
 	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/gorilla/mux"
-	"github.com/prometheus/common/log"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -143,15 +142,11 @@ func (s *CharacterService) UpdateForceCharacterSheetByID(w http.ResponseWriter, 
 	vars := mux.Vars(r)
 	ID := vars["ID"]
 
-	log.Infof("ID: %v", ID)
-
 	objectID, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {
 		api.RespondWithError(w, api.CheckError(err), err.Error())
 		return
 	}
-
-	logrus.Infof("obejctID: %v", objectID)
 
 	sheet := model.ForceCharacterSheet{}
 	err = json.NewDecoder(r.Body).Decode(&sheet)
