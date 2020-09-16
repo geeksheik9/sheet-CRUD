@@ -53,7 +53,6 @@ func (s *CharacterService) healthCheck(database CharacterDatabase) http.Handler 
 		dbErr := database.Ping()
 		var stringDBErr string
 
-		logrus.Infof("Log DB err: %v", dbErr)
 		if dbErr != nil {
 			stringDBErr = dbErr.Error()
 		}
@@ -154,8 +153,6 @@ func (s *CharacterService) UpdateForceCharacterSheetByID(w http.ResponseWriter, 
 		api.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	logrus.Info("successfully decoded")
 
 	err = s.Database.UpdateForceCharacterSheetByID(sheet, objectID)
 	if err != nil {

@@ -117,8 +117,6 @@ func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSh
 		return err
 	}
 
-	logrus.Infof("result: %v", result)
-
 	if result.MatchedCount != 1 {
 		return errors.New("Could not update sheet tried to update " + mongoID.Hex() + " got " + string(result.MatchedCount) + " matches instead of 1")
 	}
