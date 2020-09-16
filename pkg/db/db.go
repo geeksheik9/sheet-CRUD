@@ -113,9 +113,6 @@ func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSh
 		Key:   "$set",
 		Value: sheet,
 	}})
-	if err != nil {
-		return err
-	}
 
 	if result.MatchedCount != 1 {
 		return errors.New("Could not update sheet tried to update " + mongoID.Hex() + " got " + string(result.MatchedCount) + " matches instead of 1")
@@ -125,5 +122,16 @@ func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSh
 		return errors.New("Could not update sheet tried to updated " + mongoID.Hex() + " tried to update " + string(result.ModifiedCount) + " number of results instead of 1")
 	}
 
-	return nil
+	return err
+}
+
+//DeleteForceCharacterSheetByID deletes a specific force character sheet by provided ID
+func (d *CharacterDB) DeleteForceCharacterSheetByID(mongoID primitive.ObjectID) error {
+	logrus.Debug("BEGIN - DeleteForceCharacterSheetByID: %v", mongoID)
+
+	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
+
+	_, err := collection.DeleteOne(context.Background(), bson.M{"_id": mongoID})
+
+	return err
 }

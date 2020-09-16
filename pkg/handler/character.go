@@ -18,9 +18,7 @@ type CharacterDatabase interface {
 	FindForceCharacterSheetByID(mongoID primitive.ObjectID) (*model.ForceCharacterSheet, error)
 	UpdateForceCharacterSheetByID(sheet model.ForceCharacterSheet, mongoID primitive.ObjectID) error
 	InsertForceCharacterSheet(model.ForceCharacterSheet) error
-	//DeleteCharacterSheetByID()
-	//FindArchivedCharacterSheetByID()
-	//FindArchivedCharacterSheetByName()
+	DeleteForceCharacterSheetByID(mongoID primitive.ObjectID) error
 	Ping() error
 }
 
@@ -38,6 +36,7 @@ func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	r.HandleFunc("/force-character-sheet", s.GetForceCharacterSheets).Methods(http.MethodGet)
 	r.HandleFunc("/force-character-sheet/{ID}", s.FindForceCharacterSheetByID).Methods(http.MethodGet)
 	r.HandleFunc("/force-character-sheet/{ID}", s.UpdateForceCharacterSheetByID).Methods(http.MethodPut)
+	r.HandleFunc("/force-character-sheet/{ID}", s.DeleteForceCharacterSheetByID).Methods(http.MethodDelete)
 
 	return r
 }
@@ -161,4 +160,25 @@ func (s *CharacterService) UpdateForceCharacterSheetByID(w http.ResponseWriter, 
 	}
 
 	api.RespondWithJSON(w, http.StatusOK, objectID)
+}
+
+//DeleteForceCharacterSheetByID is the handler function for deleting a specific character sheet by database ID
+func (s *CharacterService) DeleteForceCharacterSheetByID(w http.ResponseWriter, r *http.Request) {
+	logrus.Infof("BEGIN - UpdateCharacterSheetByID invoked with url: %v", r.URL)
+
+	vars := mux.Vars(r)
+	ID := vars["ID"]
+
+	objectID, err := primitive.ObjectIDFromHex(ID)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+
+	err = s.Database.DeleteForceCharacterSheetByID(objectID)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+	}
+
+	api.RespondNoContent(w, http.StatusNoContent)
 }
