@@ -5,8 +5,11 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strconv"
 	"strings"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	log "github.com/sirupsen/logrus"
@@ -92,4 +95,61 @@ func CheckError(err error) int {
 	}
 
 	return code
+}
+
+//BuildQuery sets up the mongo query
+func BuildQuery(ID *primitive.ObjectID, name *string, other ...bson.M) bson.M {
+	conditions := []bson.M{}
+	c := bson.M{}
+
+	if ID != nil {
+		conditions = append(conditions, bson.M{"_id": ID})
+	}
+
+	if name != nil {
+		conditions = append(conditions, bson.M{"name": &name})
+	}
+
+	if len(other) > 0 {
+		for _, otherFilter := range other {
+			conditions = append(conditions, otherFilter)
+		}
+	}
+
+	if len(conditions) != 0 {
+		c = bson.M{"$and": conditions}
+	}
+	return c
+}
+
+//BuildFilter sets up the mongo filtering
+func BuildFilter(queryParams url.Values) (int, int, string, bson.M) {
+	filter := bson.M{}
+	filters := []bson.M{}
+	pageNumber := 0
+	pageCount := 10000
+	sort := "priority"
+	if len(queryParams) > 0 {
+		for queryParam, paramValue := range queryParams {
+			switch queryParam {
+			case "pageNumber":
+				pageNumber, _ = strconv.Atoi(paramValue[0])
+			case "pageCount":
+				pageCount, _ = strconv.Atoi(paramValue[0])
+			case "sort":
+				sort = paramValue[0]
+			default:
+				m := bson.M{queryParam: paramValue[0]}
+				filters = append(filters, m)
+			}
+		}
+		if len(filters) > 0 {
+			filter = bson.M{"$and": filters}
+		} else {
+			filter = nil
+		}
+		return pageNumber, pageCount, sort, filter
+	}
+
+	return pageNumber, pageCount, sort, nil
 }
