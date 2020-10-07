@@ -4,7 +4,7 @@ services:
   sheet-crud:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - 3000:3000
     command: ["./app"]
