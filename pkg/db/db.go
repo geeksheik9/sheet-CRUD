@@ -48,7 +48,7 @@ func (d *CharacterDB) InsertForceCharacterSheet(sheet model.ForceCharacterSheet)
 
 //GetForceCharacterSheets returns all FFG Star Wars Force sensitive character sheets that reside in the database
 func (d *CharacterDB) GetForceCharacterSheets(queryParams url.Values) ([]model.ForceCharacterSheet, error) {
-	logrus.Debugf("BEGIN - GetForceCharacterSheets")
+	logrus.Debug("BEGIN - GetForceCharacterSheets")
 
 	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
 
@@ -89,7 +89,7 @@ func (d *CharacterDB) GetForceCharacterSheets(queryParams url.Values) ([]model.F
 
 //FindForceCharacterSheetByID finds a specific force character sheet by a provided ID
 func (d *CharacterDB) FindForceCharacterSheetByID(mongoID primitive.ObjectID) (*model.ForceCharacterSheet, error) {
-	logrus.Debug("BEGIN - FindForceCharacterSheet: %v", mongoID)
+	logrus.Debugf("BEGIN - FindForceCharacterSheet: %v", mongoID)
 
 	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
 	query := api.BuildQuery(&mongoID, nil)
@@ -106,7 +106,7 @@ func (d *CharacterDB) FindForceCharacterSheetByID(mongoID primitive.ObjectID) (*
 
 //UpdateForceCharacterSheetByID updates a specific force character sheet by provided ID
 func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSheet, mongoID primitive.ObjectID) error {
-	logrus.Debug("BEGIN - UpdateForceCharacterSheetByID: %v", mongoID)
+	logrus.Debugf("BEGIN - UpdateForceCharacterSheetByID: %v", mongoID)
 
 	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
 
@@ -134,7 +134,7 @@ func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSh
 
 //DeleteForceCharacterSheetByID deletes a specific force character sheet by provided ID
 func (d *CharacterDB) DeleteForceCharacterSheetByID(mongoID primitive.ObjectID) error {
-	logrus.Debug("BEGIN - DeleteForceCharacterSheetByID: %v", mongoID)
+	logrus.Debugf("BEGIN - DeleteForceCharacterSheetByID: %v", mongoID)
 
 	collection := d.client.Database(d.databaseName).Collection(d.collectionName)
 

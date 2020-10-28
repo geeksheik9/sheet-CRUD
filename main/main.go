@@ -4,7 +4,7 @@
 //
 // version: 0.0.2-alpha
 //
-//swagger:meta
+// swagger:meta
 package main
 
 import (
