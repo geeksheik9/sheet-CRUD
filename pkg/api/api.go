@@ -82,13 +82,13 @@ func CheckError(err error) int {
 		code = http.StatusOK
 	} else if strings.Contains(err.Error(), "no documents in result") ||
 		strings.Contains(err.Error(), "out of bounds") ||
-		strings.Contains(err.Error(), "not found") {
+		strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "matches instead of 1") {
 		code = http.StatusNotFound
 	} else if strings.Contains(err.Error(), "E11000 duplicate key error") ||
 		strings.Contains(err.Error(), "E11001 duplicate key error") {
 		code = http.StatusConflict
 	} else if strings.Contains(err.Error(), "E10334") ||
-		strings.Contains(err.Error(), "Invalid request payload, unable to marshal into json, err: ") {
+		strings.Contains(err.Error(), "Invalid request payload, unable to marshal into json, err: ") || strings.Contains(err.Error(), "number of results instead of 1") {
 		code = http.StatusBadRequest
 	} else {
 		code = http.StatusInternalServerError

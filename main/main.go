@@ -1,3 +1,10 @@
+// Package main Sheet-CRUD AIP
+//
+// API for creating, reading, updating, and deleting FFG star wars character sheets
+//
+// version: 0.0.2-alpha
+//
+//swagger:meta
 package main
 
 import (
@@ -20,6 +27,7 @@ import (
 var version string
 
 func main() {
+	//go:generate swagger generate spec
 	logrus.Info("INITIALIZING SHEET CRUD")
 
 	accessor := viper.New()
