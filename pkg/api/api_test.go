@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Test_RespondWithJson(t *testing.T) {
@@ -111,5 +114,74 @@ func TestCheckError(t *testing.T) {
 	}
 	if code := CheckError(errors.New("E1")); code != http.StatusInternalServerError {
 		t.Errorf("TestCheckError(),\n   expected: %v\n   got:      %v", http.StatusInternalServerError, code)
+	}
+}
+
+func TestBuildQuery(t *testing.T) {
+	id := primitive.NewObjectID()
+
+	name := "steve"
+
+	query := BuildQuery(&id, &name, primitive.M{"tag": "tag"})
+	if query == nil {
+		t.Errorf("Error Building Query: got: %v, expected: <not nil>", query)
+	}
+}
+
+func TestBuildFilter_extraFilters(t *testing.T) {
+	queryParams := url.Values{}
+	queryParams.Set("pageCount", "5")
+	queryParams.Set("pageNumber", "1")
+	queryParams.Set("sort", "priority")
+	queryParams.Set("query", "query")
+	pageNumber, pageCount, sort, bson := BuildFilter(queryParams)
+	if pageNumber != 1 {
+		t.Errorf("Error building filters: got page number: %v, expected: 1", pageNumber)
+	}
+	if pageCount != 5 {
+		t.Errorf("Error building filters: got page count: %v, expected: 5", pageCount)
+	}
+	if sort != "priority" {
+		t.Errorf("Error building filters: got sort: %v, expected: priority", sort)
+	}
+	if bson == nil {
+		t.Errorf("Error building filters: got query: <nil>, expected <not nil>")
+	}
+}
+
+func TestBuildFilter_noExtraFilters(t *testing.T) {
+	queryParams := url.Values{}
+	queryParams.Set("pageCount", "5")
+	queryParams.Set("pageNumber", "1")
+	queryParams.Set("sort", "priority")
+	pageNumber, pageCount, sort, bson := BuildFilter(queryParams)
+	if pageNumber != 1 {
+		t.Errorf("Error building filters: got page number: %v, expected: 1", pageNumber)
+	}
+	if pageCount != 5 {
+		t.Errorf("Error building filters: got page count: %v, expected: 5", pageCount)
+	}
+	if sort != "priority" {
+		t.Errorf("Error building filters: got sort: %v, expected: priority", sort)
+	}
+	if bson != nil {
+		t.Errorf("Error building filters: got query: %v, expected <nil>", bson)
+	}
+}
+
+func TestBuildFilter_emptyfilters(t *testing.T) {
+	queryParams := url.Values{}
+	pageNumber, pageCount, sort, bson := BuildFilter(queryParams)
+	if pageNumber != 0 {
+		t.Errorf("Error building filters: got page number: %v, expected: 0", pageNumber)
+	}
+	if pageCount != 10000 {
+		t.Errorf("Error building filters: got page count: %v, expected: 10000", pageCount)
+	}
+	if sort != "priority" {
+		t.Errorf("Error building filters: got sort: %v, expected: priority", sort)
+	}
+	if bson != nil {
+		t.Errorf("Error building filters: got query: %v, expected <nil>", bson)
 	}
 }
