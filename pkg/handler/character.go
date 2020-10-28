@@ -103,6 +103,9 @@ func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet/{ID}", s.DeleteForceCharacterSheetByID).Methods(http.MethodDelete)
 
+	fs := http.FileServer(http.Dir("./swagger-ui/"))
+	r.PathPrefix("/swagger").Handler(http.StripPrefix("/swagger", fs))
+
 	return r
 }
 
