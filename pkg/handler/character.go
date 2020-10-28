@@ -32,10 +32,75 @@ type CharacterService struct {
 func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	r.HandleFunc("/ping", s.PingCheck).Methods(http.MethodGet)
 	r.Handle("/health", s.healthCheck(s.Database)).Methods(http.MethodGet)
+
+	// swagger:route POST /force-character-sheet ForceCharacterSheet
+	//
+	// Insert Force Character Sheet
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 201: description:Created
+	// 400: description:Bad request
+	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet", s.InsertForceCharacterSheet).Methods(http.MethodPost)
+	// swagger:route GET /force-character-sheet ForceCharacterSheet
+	//
+	// Get Force Character Sheet
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 200: []ForceCharacterSheet
+	// 400: description:Bad request
+	// 404: description:No records
+	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet", s.GetForceCharacterSheets).Methods(http.MethodGet)
+	// swagger:route GET /force-character-sheet/{ID} ForceCharacterSheet
+	//
+	// Get Force Character Sheet by ID
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 200: ForceCharacterSheet
+	// 400: description:Bad request
+	// 404: description:No records
+	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet/{ID}", s.FindForceCharacterSheetByID).Methods(http.MethodGet)
+	// swagger:route PUT /force-character-sheet/{ID} ForceCharacterSheet
+	//
+	// Update Force Character Sheet by ID
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 200: description:Success
+	// 400: description:Bad request
+	// 404: description:No records
+	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet/{ID}", s.UpdateForceCharacterSheetByID).Methods(http.MethodPut)
+	// swagger:route DELETE /force-character-sheet/{ID} ForceCharacterSheet
+	//
+	// Update Force Character Sheet by ID
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 204: description:No Content
+	// 400: description:Bad request
+	// 404: description:No records
+	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet/{ID}", s.DeleteForceCharacterSheetByID).Methods(http.MethodDelete)
 
 	return r

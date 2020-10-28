@@ -1,25 +1,432 @@
+definitions:
+  Amount:
+    description: Amount is a generic that holds threshold vs current for the FFG Star Wars character sheet
+    properties:
+      current:
+        format: int64
+        type: integer
+        x-go-name: Current
+      threshold:
+        format: int64
+        type: integer
+        x-go-name: Threshold
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  CharacterDescription:
+    description: CharacterDescription is a subcategory of the FFG Star Wars character sheet that describes the physical appearance of a character
+    properties:
+      age:
+        format: int64
+        type: integer
+        x-go-name: Age
+      build:
+        type: string
+        x-go-name: Build
+      eyes:
+        type: string
+        x-go-name: Eyes
+      gender:
+        type: string
+        x-go-name: Gender
+      hair:
+        type: string
+        x-go-name: Hair
+      height:
+        format: int64
+        type: integer
+        x-go-name: Height
+      notableFeatures:
+        type: string
+        x-go-name: NotableFeatures
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Characteristics:
+    description: Characteristics is a subcategory of the FFG Star Wars character sheet that keeps track of characteristics and their levels
+    properties:
+      agility:
+        format: int64
+        type: integer
+        x-go-name: Agility
+      brawn:
+        format: int64
+        type: integer
+        x-go-name: Brawn
+      cunning:
+        format: int64
+        type: integer
+        x-go-name: Cunning
+      intellect:
+        format: int64
+        type: integer
+        x-go-name: Intellect
+      presence:
+        format: int64
+        type: integer
+        x-go-name: Presence
+      willpower:
+        format: int64
+        type: integer
+        x-go-name: Willpower
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  CriticalInjuries:
+    description: CriticalInjuries is a subcategory of the FFG Star Wars character sheet that keeps track of all critical injuries suffered
+    properties:
+      result:
+        type: boolean
+        x-go-name: Result
+      severity:
+        format: int64
+        type: integer
+        x-go-name: Severity
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  DefenseStats:
+    description: DefenseStats is a generic that holds a characters Defensive amount for ranged and melee damage
+    properties:
+      melee:
+        format: int64
+        type: integer
+        x-go-name: Melee
+      ranged:
+        format: int64
+        type: integer
+        x-go-name: Ranged
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Equipment:
+    description: Equipment is a subcatergory of the FFG Star Wars character sheet that keeps track of the equipment a character has on their person
+    properties:
+      armor:
+        items:
+          $ref: '#/definitions/Gear'
+        type: array
+        x-go-name: Armor
+      credits:
+        format: int64
+        type: integer
+        x-go-name: Credits
+      personalGear:
+        items:
+          $ref: '#/definitions/Gear'
+        type: array
+        x-go-name: PersonalGear
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  ErrorResponse:
+    description: |-
+      ErrorResponse
+      struct representation of what gets returned by the RespondWithError function.
+    properties:
+      error:
+        type: string
+        x-go-name: Error
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/pkg/api
+  ForceCharacterSheet:
+    description: ForceCharacterSheet is the model for the FFG Star Wars character sheet
+    properties:
+      _id:
+        $ref: '#/definitions/ObjectID'
+      availableXP:
+        format: int64
+        type: integer
+        x-go-name: AvailableXP
+      career:
+        type: string
+        x-go-name: Career
+      characterName:
+        type: string
+        x-go-name: CharacterName
+      characteristics:
+        $ref: '#/definitions/Characteristics'
+      charcaterDescription:
+        $ref: '#/definitions/CharacterDescription'
+      criticalInjuries:
+        items:
+          $ref: '#/definitions/CriticalInjuries'
+        type: array
+        x-go-name: CriticalInjuries
+      defense:
+        $ref: '#/definitions/DefenseStats'
+      equipment:
+        $ref: '#/definitions/Equipment'
+      forceRating:
+        format: int64
+        type: integer
+        x-go-name: ForceRating
+      morality:
+        $ref: '#/definitions/Morality'
+      motivation:
+        $ref: '#/definitions/Motivation'
+      playerName:
+        type: string
+        x-go-name: PlayerName
+      skills:
+        items:
+          $ref: '#/definitions/Skills'
+        type: array
+        x-go-name: Skills
+      soakValue:
+        format: int64
+        type: integer
+        x-go-name: SoakValue
+      specializationTrees:
+        items:
+          $ref: '#/definitions/SpecializationTrees'
+        type: array
+        x-go-name: SpecializationTrees
+      species:
+        type: string
+        x-go-name: Species
+      strain:
+        $ref: '#/definitions/Amount'
+      talents:
+        items:
+          $ref: '#/definitions/Talents'
+        type: array
+        x-go-name: Talents
+      totalXP:
+        format: int64
+        type: integer
+        x-go-name: TotalXP
+      version:
+        format: int64
+        type: integer
+        x-go-name: Version
+      weapons:
+        items:
+          $ref: '#/definitions/Weapons'
+        type: array
+        x-go-name: Weapons
+      wound:
+        $ref: '#/definitions/Amount'
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  ForcePower:
+    description: ForcePower is a subcategory of the FFG Star Wars character sheet that keeps track of all Force abilities gained through the force tree
+    properties:
+      completed:
+        type: boolean
+        x-go-name: Completed
+      description:
+        type: string
+        x-go-name: Description
+      name:
+        type: string
+        x-go-name: Name
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Gear:
+    description: Gear is the generic for any gear a character may carry for the FFG Star Wars character sheet
+    properties:
+      gear:
+        type: string
+        x-go-name: Gear
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Morality:
+    description: Morality is a subcategory of the FFG Star Wars character sheet that keeps track of a characters morality
+    properties:
+      conflict:
+        format: int64
+        type: integer
+        x-go-name: Conflict
+      emotionalStrength:
+        type: string
+        x-go-name: EmotionalStrength
+      emotionalWeakness:
+        type: string
+        x-go-name: EmotionalWeakness
+      morality:
+        format: int64
+        type: integer
+        x-go-name: Morality
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Motivation:
+    description: Motivation is a subcategory of the FFG Star Wars character sheet that keeps track of a characters motivation
+    properties:
+      description:
+        type: string
+        x-go-name: Description
+      type:
+        type: string
+        x-go-name: Type
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  ObjectID:
+    items:
+      format: uint8
+      type: integer
+    title: ObjectID is the BSON ObjectID type.
+    type: array
+    x-go-package: go.mongodb.org/mongo-driver/bson/primitive
+  Skills:
+    description: Skills is a subcategory of the FFG Star Wars character sheet that keeps track of different skills and their levels
+    properties:
+      career:
+        type: boolean
+        x-go-name: Career
+      characteristic:
+        type: string
+        x-go-name: Characteristic
+      description:
+        type: string
+        x-go-name: Description
+      level:
+        format: int64
+        type: integer
+        x-go-name: Level
+      name:
+        type: string
+        x-go-name: Name
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  SpecializationTrees:
+    description: SpecializationTrees is a subcategory of the FFG Star Wars character sheet that keeps track of different abilities
+    properties:
+      completed:
+        type: boolean
+        x-go-name: Completed
+      treeName:
+        type: string
+        x-go-name: TreeName
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Talents:
+    description: Talents is a subcategory of the FFG Star Wars character sheet that keeps track of all talents acquired through skill trees
+    properties:
+      description:
+        type: string
+        x-go-name: Description
+      forcePower:
+        items:
+          $ref: '#/definitions/ForcePower'
+        type: array
+        x-go-name: ForcePower
+      name:
+        type: string
+        x-go-name: Name
+      page:
+        format: int64
+        type: integer
+        x-go-name: Page
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
+  Weapons:
+    description: Weapons is a subcategory of the FFG Star Wars character sheet that keeps track of a characters weapon inventory
+    properties:
+      crit:
+        format: int64
+        type: integer
+        x-go-name: Crit
+      damage:
+        type: string
+        x-go-name: Damage
+      name:
+        type: string
+        x-go-name: Name
+      range:
+        type: string
+        x-go-name: Range
+      skill:
+        type: string
+        x-go-name: Skill
+      special:
+        type: string
+        x-go-name: Special
+    type: object
+    x-go-package: github.com/geeksheik9/sheet-CRUD/models
 info:
-  description: API for creating, reading, updating, and deleting FFG star wars Sheets
-  title: Sheet CRUD API
-  version: v0.0.2-alpha
+  description: API for creating, reading, updating, and deleting FFG star wars character sheets
+  title: Sheet-CRUD AIP
+  version: 0.0.2-alpha
 paths:
   /force-character-sheet:
     get:
       consumes:
       - application/json
-      description: Force Character Sheets
-      operationId: GetForceCharacterSheets
+      description: Get Force Character Sheet
+      operationId: ForceCharacterSheet
       responses:
         "200":
-          $ref: '#/responses/RuleResult'
+          description: ForceCharacterSheet
+          schema:
+            items:
+              $ref: '#/definitions/ForceCharacterSheet'
+            type: array
         "400":
-          description: Required fields missing
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
+          description: Bad request
         "404":
-          description: No matching records
+          description: No records
+        "500":
+          description: Internal Server Error
+      schemes:
+      - http
+      - https
+    post:
+      consumes:
+      - application/json
+      description: Insert Force Character Sheet
+      operationId: ForceCharacterSheet
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+      schemes:
+      - http
+      - https
+  /force-character-sheet/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Update Force Character Sheet by ID
+      operationId: ForceCharacterSheet
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+        "404":
+          description: No records
+        "500":
+          description: Internal Server Error
+      schemes:
+      - http
+      - https
+    get:
+      consumes:
+      - application/json
+      description: Get Force Character Sheet by ID
+      operationId: ForceCharacterSheet
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad request
+        "404":
+          description: No records
+        "500":
+          description: Internal Server Error
+      schemes:
+      - http
+      - https
+    put:
+      consumes:
+      - application/json
+      description: Update Force Character Sheet by ID
+      operationId: ForceCharacterSheet
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad request
+        "404":
+          description: No records
         "500":
           description: Internal Server Error
       schemes:

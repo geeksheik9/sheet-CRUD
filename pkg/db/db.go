@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/url"
+	"strconv"
 	"time"
 
 	model "github.com/geeksheik9/sheet-CRUD/models"
@@ -113,16 +114,22 @@ func (d *CharacterDB) UpdateForceCharacterSheetByID(sheet model.ForceCharacterSh
 		Key:   "$set",
 		Value: sheet,
 	}})
+	if err != nil {
+		return err
+	}
+
+	matched := strconv.FormatInt(result.MatchedCount, 10)
+	modified := strconv.FormatInt(result.ModifiedCount, 10)
 
 	if result.MatchedCount != 1 {
-		return errors.New("Could not update sheet tried to update " + mongoID.Hex() + " got " + string(result.MatchedCount) + " matches instead of 1")
+		return errors.New("Could not update sheet. Tried to update " + mongoID.Hex() + " got " + matched + " matches instead of 1")
 	}
 
 	if result.ModifiedCount != 1 {
-		return errors.New("Could not update sheet tried to updated " + mongoID.Hex() + " tried to update " + string(result.ModifiedCount) + " number of results instead of 1")
+		return errors.New("Could not update sheet. Tried to updated " + mongoID.Hex() + " tried to update " + modified + " number of results instead of 1")
 	}
 
-	return err
+	return nil
 }
 
 //DeleteForceCharacterSheetByID deletes a specific force character sheet by provided ID

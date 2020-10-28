@@ -2,7 +2,8 @@ package model
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-//ForceCharacterSheet is the model for the FFG Star Wars character sheet
+// ForceCharacterSheet is the model for the FFG Star Wars character sheet
+// swagger:model
 type ForceCharacterSheet struct {
 	ID                   primitive.ObjectID    `json:"_id" bson:"_id"`
 	CharacterName        string                `json:"characterName" bson:"characterName"`
@@ -29,19 +30,22 @@ type ForceCharacterSheet struct {
 	Version              int64                 `json:"version" bson:"version"`
 }
 
-//DefenseStats is a generic that holds a characters Defensive amount for ranged and melee damage
+// DefenseStats is a generic that holds a characters Defensive amount for ranged and melee damage
+// swagger:model
 type DefenseStats struct {
 	Ranged int64 `json:"ranged" bson:"ranged"`
 	Melee  int64 `json:"melee" bson:"melee"`
 }
 
-//Amount is a generic that holds threshold vs current for the FFG Star Wars character sheet
+// Amount is a generic that holds threshold vs current for the FFG Star Wars character sheet
+// swagger:model
 type Amount struct {
 	Threshold int64 `json:"threshold" bson:"threshold"`
 	Current   int64 `json:"current" bson:"current"`
 }
 
-//CharacterDescription is a subcategory of the FFG Star Wars character sheet that describes the physical appearance of a character
+// CharacterDescription is a subcategory of the FFG Star Wars character sheet that describes the physical appearance of a character
+// swagger:model
 type CharacterDescription struct {
 	Gender          string `json:"gender" bson:"gender"`
 	Age             int64  `json:"age" bson:"age"`
@@ -52,13 +56,15 @@ type CharacterDescription struct {
 	NotableFeatures string `json:"notableFeatures" bson:"notableFeatures"`
 }
 
-//SpecializationTrees is a subcategory of the FFG Star Wars character sheet that keeps track of different abilities
+// SpecializationTrees is a subcategory of the FFG Star Wars character sheet that keeps track of different abilities
+// swagger:model
 type SpecializationTrees struct {
 	TreeName  string `json:"treeName" bson:"treeName"`
 	Completed bool   `json:"completed" bson:"completed"`
 }
 
-//Characteristics is a subcategory of the FFG Star Wars character sheet that keeps track of characteristics and their levels
+// Characteristics is a subcategory of the FFG Star Wars character sheet that keeps track of characteristics and their levels
+// swagger:model
 type Characteristics struct {
 	Brawn     int64 `json:"brawn" bson:"brawn"`
 	Agility   int64 `json:"agility" bson:"agility"`
@@ -68,7 +74,8 @@ type Characteristics struct {
 	Presence  int64 `json:"presence" bson:"presence"`
 }
 
-//Skills is a subcategory of the FFG Star Wars character sheet that keeps track of different skills and their levels
+// Skills is a subcategory of the FFG Star Wars character sheet that keeps track of different skills and their levels
+// swagger:model
 type Skills struct {
 	Name           string `json:"name" bson:"name"`
 	Characteristic string `json:"characteristic" bson:"characteristic"`
@@ -77,7 +84,8 @@ type Skills struct {
 	Description    string `json:"description" bson:"description"`
 }
 
-//Weapons is a subcategory of the FFG Star Wars character sheet that keeps track of a characters weapon inventory
+// Weapons is a subcategory of the FFG Star Wars character sheet that keeps track of a characters weapon inventory
+// swagger:model
 type Weapons struct {
 	Name    string `json:"name" bson:"name"`
 	Skill   string `json:"skill" bson:"skill"`
@@ -87,13 +95,15 @@ type Weapons struct {
 	Special string `json:"special" bson:"special"`
 }
 
-//Motivation is a subcategory of the FFG Star Wars character sheet that keeps track of a characters motivation
+// Motivation is a subcategory of the FFG Star Wars character sheet that keeps track of a characters motivation
+// swagger:model
 type Motivation struct {
 	Type        string `json:"type" bson:"type"`
 	Description string `json:"description" bson:"description"`
 }
 
-//Morality is a subcategory of the FFG Star Wars character sheet that keeps track of a characters morality
+// Morality is a subcategory of the FFG Star Wars character sheet that keeps track of a characters morality
+// swagger:model
 type Morality struct {
 	EmotionalStrength string `json:"emotionalStrength" bson:"emotionalStrength"`
 	EmotionalWeakness string `json:"emotionalWeakness" bson:"emotionalWeekness"`
@@ -101,19 +111,22 @@ type Morality struct {
 	Morality          int64  `json:"morality" bson:"morality"`
 }
 
-//Equipment is a subcatergory of the FFG Star Wars character sheet that keeps track of the equipment a character has on their person
+// Equipment is a subcatergory of the FFG Star Wars character sheet that keeps track of the equipment a character has on their person
+// swagger:model
 type Equipment struct {
 	Credits      int64  `json:"credits" bson:"credits"`
 	Armor        []Gear `json:"armor" bson:"armor"`
 	PersonalGear []Gear `json:"personalGear" bson:"personalGear"`
 }
 
-//Gear is the generic for any gear a character may carry for the FFG Star Wars character sheet
+// Gear is the generic for any gear a character may carry for the FFG Star Wars character sheet
+// swagger:model
 type Gear struct {
 	Gear string `json:"gear" bson:"gear"`
 }
 
-//Talents is a subcategory of the FFG Star Wars character sheet that keeps track of all talents acquired through skill trees
+// Talents is a subcategory of the FFG Star Wars character sheet that keeps track of all talents acquired through skill trees
+// swagger:model
 type Talents struct {
 	Name        string       `json:"name" bson:"name"`
 	Page        int64        `json:"page" bson:"page"`
@@ -121,14 +134,16 @@ type Talents struct {
 	ForcePower  []ForcePower `json:"forcePower" bson:"forcePower"`
 }
 
-//ForcePower is a subcategory of the FFG Star Wars character sheet that keeps track of all Force abilities gained through the force tree
+// ForcePower is a subcategory of the FFG Star Wars character sheet that keeps track of all Force abilities gained through the force tree
+// swagger:model
 type ForcePower struct {
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
 	Completed   bool   `json:"completed" bson:"completed"`
 }
 
-//CriticalInjuries is a subcategory of the FFG Star Wars character sheet that keeps track of all critical injuries suffered
+// CriticalInjuries is a subcategory of the FFG Star Wars character sheet that keeps track of all critical injuries suffered
+// swagger:model
 type CriticalInjuries struct {
 	Severity int64 `json:"severity" bson:"severity"`
 	Result   bool  `json:"result" bson:"result"`
