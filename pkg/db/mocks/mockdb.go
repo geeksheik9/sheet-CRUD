@@ -10,9 +10,8 @@ import (
 //MockCharacterDB is the mock struct for testing
 type MockCharacterDB struct {
 	SheetsToReturn []model.ForceCharacterSheet
-	SheetToReturn  model.ForceCharacterSheet
+	SheetToReturn  *model.ForceCharacterSheet
 	ErrorToReturn  error
-	IDToReturn     primitive.ObjectID
 }
 
 //GetForceCharacterSheets is the mock implementation for testing
@@ -37,5 +36,10 @@ func (db *MockCharacterDB) InsertForceCharacterSheet(sheet model.ForceCharacterS
 
 //DeleteForceCharacterSheetByID is the mock implementation for testing
 func (db *MockCharacterDB) DeleteForceCharacterSheetByID(mongoID primitive.ObjectID) error {
+	return db.ErrorToReturn
+}
+
+//Ping is the mock implementation for testing
+func (db *MockCharacterDB) Ping() error {
 	return db.ErrorToReturn
 }
