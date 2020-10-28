@@ -12,4 +12,6 @@ FROM alpine:latest
 WORKDIR /root
 COPY --from=builder /sheet-CRUD/main/app .
 
+COPY ./swagger-ui /root/swagger-ui
+
 CMD ["./app"]
