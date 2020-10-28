@@ -1,0 +1,28 @@
+info:
+  description: API for creating, reading, updating, and deleting FFG star wars Sheets
+  title: Sheet CRUD API
+  version: v0.0.2-alpha
+paths:
+  /force-character-sheet:
+    get:
+      consumes:
+      - application/json
+      description: Force Character Sheets
+      operationId: GetForceCharacterSheets
+      responses:
+        "200":
+          $ref: '#/responses/RuleResult'
+        "400":
+          description: Required fields missing
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: No matching records
+        "500":
+          description: Internal Server Error
+      schemes:
+      - http
+      - https
+swagger: "2.0"
