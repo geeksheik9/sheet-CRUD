@@ -1,0 +1,18 @@
+r*.build
+*.ci
+*.sh
+*.out
+*.yml
+*.exe
+.git/
+.dockerignore
+.gitignore
+.idea/
+.vscode/
+.generated_env_config/
+
+# ignore the caBundle.pem files (cabundle.pem) in all folders, including build root
+**/caBundle.pem
+
+# Ignore custom project binaries
+*-exec
