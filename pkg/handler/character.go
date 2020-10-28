@@ -17,7 +17,7 @@ type CharacterDatabase interface {
 	GetForceCharacterSheets(query url.Values) ([]model.ForceCharacterSheet, error)
 	FindForceCharacterSheetByID(mongoID primitive.ObjectID) (*model.ForceCharacterSheet, error)
 	UpdateForceCharacterSheetByID(sheet model.ForceCharacterSheet, mongoID primitive.ObjectID) error
-	InsertForceCharacterSheet(model.ForceCharacterSheet) error
+	InsertForceCharacterSheet(sheet model.ForceCharacterSheet) error
 	DeleteForceCharacterSheetByID(mongoID primitive.ObjectID) error
 	Ping() error
 }
