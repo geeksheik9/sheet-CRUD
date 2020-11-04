@@ -1,4 +1,4 @@
-// Package main Sheet-CRUD AIP
+// Package main Sheet-CRUD API
 //
 // API for creating, reading, updating, and deleting FFG star wars character sheets
 //
