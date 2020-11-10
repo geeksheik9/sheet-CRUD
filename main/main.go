@@ -15,8 +15,10 @@ import (
 	"time"
 
 	"github.com/geeksheik9/sheet-CRUD/config"
+	"github.com/geeksheik9/sheet-CRUD/pkg/api"
 	"github.com/geeksheik9/sheet-CRUD/pkg/db"
 	"github.com/geeksheik9/sheet-CRUD/pkg/handler"
+	"github.com/geeksheik9/sheet-CRUD/pkg/rbac"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -59,9 +61,12 @@ func main() {
 		log.Fatalf("Error no database from client %v", client)
 	}
 
+	roleClient, err := NewRoleClient(config)
+
 	characterService := handler.CharacterService{
-		Version:  version,
-		Database: database,
+		Version:    version,
+		Database:   database,
+		RBACClient: roleClient,
 	}
 
 	r := mux.NewRouter().StrictSlash(true)
@@ -70,4 +75,19 @@ func main() {
 	fmt.Printf("Sever listening on port %v\n", config.Port)
 	logrus.Info("END")
 	log.Fatal(http.ListenAndServe(":"+config.Port, cors.Default().Handler(r)))
+}
+
+/*
+ *
+ * Helpers
+ *
+ */
+
+// NewRoleClient creates a new role client from a config
+func NewRoleClient(conf *config.Config) (rbac.RoleAPIClient, error) {
+	client, err := rbac.NewRoleClient(conf.JWTTokenDecoder, "sheet-CRUD", api.DefaultTimeout, api.GetHTTPClient(nil))
+	if err != nil {
+		logrus.Errorf("Encountered fatal error initializeing role client: %v", err)
+	}
+	return client, err
 }

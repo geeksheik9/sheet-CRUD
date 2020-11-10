@@ -11,6 +11,7 @@ var envMap = map[string]string{
 	characterDatabase:   defaultCharacterDatabase,
 	characterCollection: defaultCharacterCollection,
 	characterArchive:    defaultCharacterArchive,
+	jwtTokenDecoder:     defaultJWTTokenDecoder,
 	logLevel:            defaultlogLevel,
 }
 
@@ -20,6 +21,7 @@ type Config struct {
 	CharacterDatabase   string       `json:"characterDatabase"`
 	CharacterCollection string       `json:"characterCollection"`
 	CharacterArchive    string       `json:"characterArchive"`
+	JWTTokenDecoder     string       `json:"jwtTokenDecoder"`
 	LogLevel            logrus.Level `json:"log-level"`
 }
 
@@ -47,6 +49,7 @@ func New(accessor Accessor) (c *Config, err error) {
 		CharacterDatabase:   envMap[characterDatabase],
 		CharacterCollection: envMap[characterCollection],
 		CharacterArchive:    envMap[characterArchive],
+		JWTTokenDecoder:     envMap[jwtTokenDecoder],
 		LogLevel:            currentLogLevel,
 	}
 	return &config, nil

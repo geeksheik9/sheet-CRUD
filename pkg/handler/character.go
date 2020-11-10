@@ -1,12 +1,15 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"strings"
 
 	model "github.com/geeksheik9/sheet-CRUD/models"
 	"github.com/geeksheik9/sheet-CRUD/pkg/api"
+	"github.com/geeksheik9/sheet-CRUD/pkg/rbac"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,8 +27,9 @@ type CharacterDatabase interface {
 
 //CharacterService is the implementation of the service to access character sheets
 type CharacterService struct {
-	Version  string
-	Database CharacterDatabase
+	Version    string
+	Database   CharacterDatabase
+	RBACClient rbac.RoleAPIClient
 }
 
 //Routes sets up the routes for the RESTful interface
@@ -60,7 +64,7 @@ func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	// 404: description:No records
 	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet", s.GetForceCharacterSheets).Methods(http.MethodGet)
-	// swagger:route GET /force-character-sheet/{ID} ForceCharacterSheet
+	// swagger:route GET /force-character-sheet ForceCharacterSheet
 	//
 	// Get Force Character Sheet by ID
 	//
@@ -143,10 +147,33 @@ func (s *CharacterService) InsertForceCharacterSheet(w http.ResponseWriter, r *h
 	logrus.Infof("InsertForceCharacterSheet invoked with url: %v", r.URL)
 	defer r.Body.Close()
 
+	tokenString := r.Header.Get("Authorization")
+	if strings.Contains(tokenString, "Bearer") {
+		tokenString = strings.Trim(tokenString, "Bearer")
+		tokenString = strings.Trim(tokenString, " ")
+	}
+	if tokenString == "" {
+		api.RespondWithError(w, http.StatusUnauthorized, "User is not authorized to make this request")
+		return
+	}
+
+	roles := []model.Role{
+		{Name: "gamemaster"},
+	}
+	authorized, err := s.RBACClient.PerformRBACCheck(context.Background(), tokenString, roles)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+	if !authorized {
+		api.RespondWithJSON(w, http.StatusUnauthorized, "User is not authorized to access this resource")
+		return
+	}
+
 	var characterSheet model.ForceCharacterSheet
 	characterSheet.ID = primitive.NewObjectID()
 
-	err := json.NewDecoder(r.Body).Decode(&characterSheet)
+	err = json.NewDecoder(r.Body).Decode(&characterSheet)
 	if err != nil {
 		api.RespondWithError(w, http.StatusBadRequest, "Invalid Request Payload")
 		return
@@ -169,6 +196,29 @@ func (s *CharacterService) InsertForceCharacterSheet(w http.ResponseWriter, r *h
 func (s *CharacterService) GetForceCharacterSheets(w http.ResponseWriter, r *http.Request) {
 	logrus.Infof("GetForceCharacterSheet invoked with url: %v", r.URL)
 
+	tokenString := r.Header.Get("Authorization")
+	if strings.Contains(tokenString, "Bearer") {
+		tokenString = strings.Trim(tokenString, "Bearer")
+		tokenString = strings.Trim(tokenString, " ")
+	}
+	if tokenString == "" {
+		api.RespondWithError(w, http.StatusUnauthorized, "User is not authorized to make this request")
+		return
+	}
+
+	roles := []model.Role{
+		{Name: "viewer"},
+	}
+	authorized, err := s.RBACClient.PerformRBACCheck(context.Background(), tokenString, roles)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+	if !authorized {
+		api.RespondWithJSON(w, http.StatusUnauthorized, "User is not authorized to access this resource")
+		return
+	}
+
 	sheets, err := s.Database.GetForceCharacterSheets(r.URL.Query())
 	if err != nil {
 		api.RespondWithError(w, api.CheckError(err), err.Error())
@@ -181,6 +231,29 @@ func (s *CharacterService) GetForceCharacterSheets(w http.ResponseWriter, r *htt
 //FindForceCharacterSheetByID is the handler function for getting a specific character sheet by database ID
 func (s *CharacterService) FindForceCharacterSheetByID(w http.ResponseWriter, r *http.Request) {
 	logrus.Infof("BEGIN - FindCharacterSheetByID invoked with url: %v", r.URL)
+
+	tokenString := r.Header.Get("Authorization")
+	if strings.Contains(tokenString, "Bearer") {
+		tokenString = strings.Trim(tokenString, "Bearer")
+		tokenString = strings.Trim(tokenString, " ")
+	}
+	if tokenString == "" {
+		api.RespondWithError(w, http.StatusUnauthorized, "User is not authorized to make this request")
+		return
+	}
+
+	roles := []model.Role{
+		{Name: "viewer"},
+	}
+	authorized, err := s.RBACClient.PerformRBACCheck(context.Background(), tokenString, roles)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+	if !authorized {
+		api.RespondWithJSON(w, http.StatusUnauthorized, "User is not authorized to access this resource")
+		return
+	}
 
 	vars := mux.Vars(r)
 	ID := vars["ID"]
@@ -207,6 +280,29 @@ func (s *CharacterService) UpdateForceCharacterSheetByID(w http.ResponseWriter, 
 
 	vars := mux.Vars(r)
 	ID := vars["ID"]
+
+	tokenString := r.Header.Get("Authorization")
+	if strings.Contains(tokenString, "Bearer") {
+		tokenString = strings.Trim(tokenString, "Bearer")
+		tokenString = strings.Trim(tokenString, " ")
+	}
+	if tokenString == "" {
+		api.RespondWithError(w, http.StatusUnauthorized, "User is not authorized to make this request")
+		return
+	}
+
+	roles := []model.Role{
+		{Name: "player"},
+	}
+	authorized, err := s.RBACClient.PerformRBACCheck(context.Background(), tokenString, roles)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+	if !authorized {
+		api.RespondWithJSON(w, http.StatusUnauthorized, "User is not authorized to access this resource")
+		return
+	}
 
 	objectID, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {
@@ -236,6 +332,29 @@ func (s *CharacterService) DeleteForceCharacterSheetByID(w http.ResponseWriter, 
 
 	vars := mux.Vars(r)
 	ID := vars["ID"]
+
+	tokenString := r.Header.Get("Authorization")
+	if strings.Contains(tokenString, "Bearer") {
+		tokenString = strings.Trim(tokenString, "Bearer")
+		tokenString = strings.Trim(tokenString, " ")
+	}
+	if tokenString == "" {
+		api.RespondWithError(w, http.StatusUnauthorized, "User is not authorized to make this request")
+		return
+	}
+
+	roles := []model.Role{
+		{Name: "gamemaster"},
+	}
+	authorized, err := s.RBACClient.PerformRBACCheck(context.Background(), tokenString, roles)
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+	if !authorized {
+		api.RespondWithJSON(w, http.StatusUnauthorized, "User is not authorized to access this resource")
+		return
+	}
 
 	objectID, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {
