@@ -1,0 +1,27 @@
+replicaCount: 1
+image:
+  repository: hub.docker.com/repository/docker/geeksheik9/sheet-crud
+  tag: v0.0.2-alpha
+  pullPolicay: Always
+service:
+  name: sheet-crud
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 3000
+resources:
+  limits:
+    cpu: 512m
+    memory: 512mi
+  requests:
+    cpu: 100m
+    memory: 128mi
+ingress:
+  env: bens-cluster
+  domain: bens-apps.com
+  tls: false
+  annotations:
+    kubernetes.io/ingress.class: traefik
+replicas:
+  min: 1
+  max: 10
+  targetCPUPercent: 80

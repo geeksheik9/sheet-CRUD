@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.service.name }}
+  annotations: 
+    {{- range $key, $value := .Values.ingress.annotations -}}
+    {{ $key }}: {{ $value | quote }}
+    {{- end -}}
+spec:
+  rules:
+  - host: {{ .Values.service.name }}.{{ .Values.ingress.env }}.{{ .Values.ingress.domain }}
+    http:
+      paths:
+      - backend:
+        serviceName: {{ .Values.service.name }}
+
