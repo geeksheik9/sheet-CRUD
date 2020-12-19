@@ -341,7 +341,7 @@ definitions:
 info:
   description: API for creating, reading, updating, and deleting FFG star wars character sheets
   title: Sheet-CRUD AIP
-  version: 0.0.2-alpha
+  version: 0.0.3-alpha
 paths:
   /force-character-sheet:
     get:
