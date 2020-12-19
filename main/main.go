@@ -69,5 +69,5 @@ func main() {
 	r = characterService.Routes(r)
 	fmt.Printf("Sever listening on port %v\n", config.Port)
 	logrus.Info("END")
-	log.Fatal(http.ListenAndServe(":"+config.Port, cors.Default().Handler(r)))
+	log.Fatal(http.ListenAndServe(":"+config.Port, cors.AllowAll().Handler(r)))
 }
