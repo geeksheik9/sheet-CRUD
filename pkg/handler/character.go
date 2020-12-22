@@ -74,6 +74,20 @@ func (s *CharacterService) Routes(r *mux.Router) *mux.Router {
 	// 404: description:No records
 	// 500: description:Internal Server Error
 	r.HandleFunc("/force-character-sheet/{ID}", s.FindForceCharacterSheetByID).Methods(http.MethodGet)
+	// swagger:route GET /force-character-sheet/{name} ForceCharacterSheet
+	//
+	// Get Force Character Sheet by Name
+	//
+	// Consumes:
+	// - application/json
+	// Schemes: http, https
+	//
+	// responses:
+	// 200: ForceCharacterSheet
+	// 400: description:Bad request
+	// 404: description:No records
+	// 500: description:Internal Server Error
+	r.HandleFunc("/user-force-character-sheet", s.FindForceCharacterSheetByName).Methods(http.MethodGet)
 	// swagger:route PUT /force-character-sheet/{ID} ForceCharacterSheet
 	//
 	// Update Force Character Sheet by ID
@@ -197,6 +211,27 @@ func (s *CharacterService) FindForceCharacterSheetByID(w http.ResponseWriter, r 
 		return
 	}
 
+	api.RespondWithJSON(w, http.StatusOK, sheet)
+}
+
+//FindForceCharacterSheetByName is the handler fucntion for getting a specific sheet by user name
+func (s *CharacterService) FindForceCharacterSheetByName(w http.ResponseWriter, r *http.Request) {
+	logrus.Infof("BEGIN - FindCharacterSheetByID invoked with url: %v", r.URL)
+
+	sheets, err := s.Database.GetForceCharacterSheets(r.URL.Query())
+	if err != nil {
+		api.RespondWithError(w, api.CheckError(err), err.Error())
+		return
+	}
+
+	sheet := sheets[0]
+	if len(sheets) > 1 {
+		for _, value := range sheets {
+			if int(value.Version) > int(sheet.Version) {
+				sheet = value
+			}
+		}
+	}
 	api.RespondWithJSON(w, http.StatusOK, sheet)
 }
 
